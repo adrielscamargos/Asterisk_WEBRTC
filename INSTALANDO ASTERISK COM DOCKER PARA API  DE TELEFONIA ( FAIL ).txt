@@ -1,0 +1,210 @@
+usando imagem do docker do asterisk 16 
+
+git clone https://github.com/mlan/docker-asterisk.git
+
+instala git e usa ela.
+}
+This repository contains a demo directory which hold the docker-compose.yml file as well as a Makefile which might com
+
+acessa com su deployzdg 
+sudo git clone https://github.com/mlan/docker-asterisk.git
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+
+sudo bash -c 'echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu eoan stable" > /etc/apt/sources.list.d/docker-ce.list'
+
+
+view rawhow-to-install-docker-on-ubuntu-20-04_sourcelist_eoan.bash hosted with ❤ by GitHub
+
+
+sudo apt-get update
+
+apt-cache policy docker-ce
+
+Finally, install Docker:
+
+sudo apt-get install -y docker-ce
+
+
+check status
+
+sudo systemctl status docker
+
+OK
+
+sudo usermod -aG docker deployzdg
+
+
+
+sudo apt-get install docker-compose
+
+
+dentro de docker-asterisk/demo 
+
+ 
+make up
+
+ALTERANDO POSTAS no Makefile
+
+sudo nano Makefile
+
+SMS_HOST port de 8080 para 9002
+
+
+compose.yml
+
+
+- "${SMS_PORT-9002}:${WEBSMSD_PORT:-90}" # WEBSMSD port mapping
+
+
+
+
+
+docker run --publish 9005:9005 docker-asterisk
+
+FAIL
+
+docker-compose up
+
+ERROR 
+
+docker run -d -v proxy-acme:/acme:ro mlan/asterisk
+
+OK
+
+AINDA /root/docker-asterisk/demo
+
+make cli
+
+
+############################################33
+
+
+TESTE DE PORTA NO BACKEND
+
+
+
+Let’s open a new terminal then make a POST request to the server using the curl command.
+
+
+ curl --request POST \
+  --url http://localhost:8000/test \
+  --header 'content-type: application/json' \
+  --data '{"msg": "testing"}'
+  
+  
+ #############################################################################################
+  
+  
+  
+  Start the container and expose port 8000 to port 8000 on the host.
+
+
+ docker run --publish 8000:8000 node-docker
+ 
+ 
+ #########################################################################################33
+ 
+ LISTAR CONTARINERS
+  
+ docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                    NAMES
+ce02b3179f0f        node-docker         "docker-entrypoint.s…"   6 minutes ago       Up 6 minutes        0.0.0.0:8000->8000/tcp   wonderful_kalam
+
+###############################################################################################
+START STOP CONTAINERS
+
+docker ps -a
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                      PORTS               NAMES
+ce02b3179f0f        node-docker         "docker-entrypoint.s…"   16 minutes ago      Exited (0) 5 minutes ago                        wonderful_kalam
+ec45285c456d        node-docker         "docker-entrypoint.s…"   28 minutes ago      Exited (0) 20 minutes ago                       agitated_moser
+fb7a41809e5d        node-docker         "docker-entrypoint.s…"   37 minutes ago      Exited (0) 36 minutes ago                       goofy_khayyam
+
+docker ps -all
+
+
+
+
+INSTALANDO NA PASTA DO USUARIO deployzdg
+
+OBS a porta do websocjket 443 sera trocada por outra porta para protocolo ws ser utilizado no ramal webrtc
+
+
+#333333333333333333333333333333333########################################################333###3333##333##3##3#33##333333333333333333
+
+
+Ubuntu 18 LTS on Amazon Web Services & Google Cloud Platform
+First make sure the system is updated
+
+$ sudo apt-get update
+Install Asterisk
+
+$ cd ~
+$ wget http://downloads.asterisk.org/pub/telephony/asterisk/asterisk-18-current.tar.gz
+$ tar -xvf asterisk-18[tab]
+$ cd asterisk-18.[tab]
+$ sudo su
+# contrib/scripts/install_prereq install
+# ./configure --with-pjproject-bundled
+# make menuselect
+# make && make install && make config
+# exit
+$ cd ~
+
+
+Install Config files for Asterisk
+
+$ git clone https://github.com/InnovateAsterisk/S2E2.git
+$ sudo cp ~/S2E2/config/* /etc/asterisk
+Edit the HTTP config file
+
+onde for 8080 trocar por 9090 
+e 80 trocar por 90 
+443 será 447
+4443 4447
+
+$ sudo nano /etc/asterisk/http.conf
+
+[general]
+enabled=yes ; HTTP 
+bindaddr=127.0.0.1 
+bindport=9090 
+tlsenable=no ; HTTPS 
+enablestatic=no 
+Asterisk can now be restarted, and will run correctly
+
+$ sudo service asterisk restart
+Install and Configure Apache2
+
+$ cd ~
+$ sudo su
+# apt-get install apache2
+# a2enmod ssl
+# a2enmod proxy
+# a2enmod proxy_http
+# a2enmod proxy_wstunnel
+
+Open the ports we need
+
+# nano /etc/apache2/ports.conf
+
+
+Listen 0.0.0.0:90
+Listen 0.0.0.0:447
+Listen 0.0.0.0:4447
+
+# nano /etc/apache2/sites-enabled/000-default.conf 
+
+<VirtualHost 0.0.0.0:90>
+        ServerName https://apiwhaticket2.magnetrontelecom.com.br:
+        DocumentRoot /var/www/html
+</VirtualHost>
+
+
+Restart Apache2 to apply changes
+
+# service apache2 restart
+Test your work
+
+# netstat -tunlp
